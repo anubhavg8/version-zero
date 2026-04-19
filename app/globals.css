@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #04140f;
+  --bg-elev: #061c16;
+  --fg: #74fbde;
+  --fg-muted: rgba(116, 251, 222, 0.6);
+  --fg-dim: rgba(116, 251, 222, 0.35);
+  --fg-faint: rgba(116, 251, 222, 0.15);
+  --accent: #74fbde;
+  --accent-fg: #02160f;
+  --warn: #c7c439;
+  --warn-soft: rgba(255, 252, 91, 0.15);
+  --warn-bright: #fffc5b;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-accent: var(--accent);
+  --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-geist-pixel-square);
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.font-pixel {
+  font-family: var(--font-geist-pixel-square), var(--font-geist-mono), ui-monospace, monospace;
+}
+
+body {
+  overflow: hidden;
+  font-feature-settings: "ss01", "ss02";
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+.scanlines::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(116, 251, 222, 0.04) 0px,
+    rgba(116, 251, 222, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 50;
+  mix-blend-mode: screen;
+}
+
+.vignette::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 49;
+}
+
+/* Scrollbar hidden on the terminal for cleanliness */
+::-webkit-scrollbar { width: 0; height: 0; }
