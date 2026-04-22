@@ -17,7 +17,11 @@ function formatTime(d: Date) {
   const s = pad(d.getSeconds());
   const ampm = h >= 12 ? "PM" : "AM";
   h = h % 12 || 12;
-  return `${pad(h)}:${m}:${s} ${ampm}`;
+  const tz =
+    new Intl.DateTimeFormat("en-US", { timeZoneName: "short" })
+      .formatToParts(d)
+      .find((p) => p.type === "timeZoneName")?.value ?? "";
+  return `${pad(h)}:${m}:${s} ${ampm}${tz ? ` ${tz}` : ""}`;
 }
 
 // Module-level cache so getSnapshot returns a stable reference unless the
@@ -52,25 +56,32 @@ function getServerSnapshot() {
   return 0;
 }
 
-export default function MainHeader() {
+export function StatusInfo({ className = "" }: { className?: string }) {
   const ts = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const now = ts === 0 ? null : new Date(ts);
   const dateStr = now ? formatDate(now) : "APRIL 15, 2026";
-  const timeStr = now ? formatTime(now) : "08:40:12 PM";
+  const timeStr = now ? formatTime(now) : "08:40:12 PM GMT";
 
   return (
     <div
-      className="absolute top-5 left-6 right-6 flex items-start justify-between text-[11px] tracking-[0.14em] uppercase z-[60]"
+      className={`flex items-start justify-between text-[11px] tracking-[0.14em] uppercase ${className}`}
       style={{ color: "#74FBDE" }}
     >
-      <div className="leading-[1.55]">
+      <div className="text-[10px] tracking-normal leading-[120%]">
         <div>Status: Active</div>
         <div>Version: 0.1.2-Beta</div>
       </div>
-      <div className="text-right leading-[1.55]" suppressHydrationWarning>
+      <div
+        className="text-right text-[10px] tracking-normal leading-[120%]"
+        suppressHydrationWarning
+      >
         <div>{dateStr}</div>
         <div>{timeStr}</div>
       </div>
     </div>
   );
+}
+
+export default function MainHeader() {
+  return <StatusInfo className="absolute top-5 left-5 right-5 z-[60]" />;
 }

@@ -5,7 +5,8 @@ import CornerFrame from "./components/CornerFrame";
 import Sidebar from "./components/Sidebar";
 import MainHeader from "./components/MainHeader";
 import MainFooter from "./components/MainFooter";
-import MatrixBackdrop from "./components/MatrixBackdrop";
+import PoweredByCard from "./components/PoweredByCard";
+
 import EventPopup from "./components/EventPopup";
 import SessionPopup from "./components/SessionPopup";
 import type { PopupKey } from "./components/popupTypes";
@@ -33,13 +34,57 @@ export default function Home() {
 
   return (
     <div
-      className="h-screen w-screen overflow-hidden relative flex"
-      style={{ background: "var(--bg)", color: "var(--fg)" }}
+      className="min-h-screen md:h-screen w-screen relative flex flex-col md:flex-row p-2.5 lg:p-[17px] overflow-y-auto md:overflow-hidden"
+      style={{ color: "var(--fg)" }}
     >
       <CornerFrame />
       <Sidebar openKeys={openPopups} onSelect={toggle} />
-      <main className="flex-1 relative overflow-hidden">
-        <MatrixBackdrop />
+      <main className="hidden md:block flex-1 relative">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* <img
+          src="/donut.png"
+          alt=""
+          aria-hidden
+          className="absolute top-1/2 left-1/2 pointer-events-none select-none"
+          style={{
+            transform: "translate(-50%, -50%)",
+            width: "min(60%, 640px)",
+            height: "auto",
+            mixBlendMode: "color-dodge",
+            zIndex: 0,
+          }}
+        /> */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ isolation: "isolate", zIndex: 0 }}
+        >
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: 'url("/letters.png")',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              filter: "sepia(1) hue-rotate(105deg) saturate(4) brightness(0.8)",
+              mixBlendMode: "screen",
+              opacity: 0.10,
+            }}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* <img
+            src="/mask_image.png"
+            alt=""
+            className="absolute select-none"
+            style={{
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 720,
+              height: 720,
+              mixBlendMode: "color-dodge",
+            }}
+          /> */}
+        </div>
         <MainHeader />
         {openPopups.map((key) => {
           const pos = INITIAL_POS[key];
@@ -66,6 +111,9 @@ export default function Home() {
         })}
         <MainFooter />
       </main>
+      <div className="md:hidden">
+        <PoweredByCard />
+      </div>
     </div>
   );
 }

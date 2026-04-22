@@ -84,7 +84,7 @@ export default function PopupFrame({
         ...posStyle,
         width,
         background: "var(--bg)",
-        border: "1px solid var(--fg-dim)",
+        border: "0.5px solid var(--fg-dim)",
         boxShadow: "0 0 0 1px rgba(116,251,222,0.05) inset",
       }}
     >
@@ -93,21 +93,38 @@ export default function PopupFrame({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        className="flex items-center justify-between px-4 py-2 text-[11px] tracking-[0.14em] uppercase"
+        className="relative flex items-center justify-between px-5 py-2.5 text-[10px] tracking-normal leading-[150%] uppercase"
         style={{
           background: "color-mix(in oklab, var(--accent) 18%, var(--bg))",
-          borderBottom: "1px solid var(--fg-dim)",
+          borderBottom: "0.5px solid var(--fg-dim)",
           color: "var(--fg)",
           cursor: "grab",
           touchAction: "none",
         }}
       >
-        <span>&gt; {title}</span>
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "rgba(116, 251, 222, 0.15)",
+            filter: "blur(10px)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "url(/pixels.svg)",
+            backgroundRepeat: "repeat",
+            opacity: 0.1,
+          }}
+        />
+        <span className="relative">&gt; {title}</span>
         <button
           type="button"
           onPointerDown={(e) => e.stopPropagation()}
           onClick={onClose}
-          className="cursor-pointer hover:text-[var(--accent)]"
+          className="relative cursor-pointer hover:text-[var(--accent)]"
         >
           [x]
         </button>

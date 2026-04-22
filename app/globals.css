@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #04140f;
+  --bg: #070F0D;
   --bg-elev: #061c16;
   --fg: #74fbde;
   --fg-muted: rgba(116, 251, 222, 0.6);
@@ -33,8 +33,27 @@ html, body {
 }
 
 body {
-  overflow: hidden;
   font-feature-settings: "ss01", "ss02";
+  background: var(--bg);
+}
+
+@media (min-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("/noiseEffect.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 1;
+  z-index: 60;
 }
 
 @keyframes blink {

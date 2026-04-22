@@ -1,32 +1,19 @@
 import Image from "next/image";
-
-const pixelBg = {
-  backgroundImage: "url(/pixels.svg)",
-  backgroundSize: "auto",
-  backgroundRepeat: "repeat",
-  backgroundPosition: "top left",
-};
+import CornerPlus from "./CornerPlus";
 
 export default function PoweredByCard() {
   return (
     <div
-      className="flex relative"
+      className="flex relative overflow-visible w-full md:w-[340px]"
       style={{
-        border: "1px solid var(--fg-dim)",
-        width: 340,
+        border: "0.5px solid var(--fg-dim)",
         background: "var(--bg)",
       }}
     >
-      {/* Pixel texture overlay behind the content (matches section-header bars) */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{ ...pixelBg, opacity: 0.12 }}
-      />
       <div
         className="w-[96px] relative"
         style={{
-          borderRight: "1px solid var(--fg-dim)",
+          // borderRight: "0.5px solid var(--fg-dim)",
           background: "var(--bg-elev)",
         }}
       >
@@ -37,36 +24,49 @@ export default function PoweredByCard() {
           sizes="96px"
           style={{ objectFit: "cover", imageRendering: "pixelated" }}
         />
+        <CornerPlus className="-top-0.75 -left-0.75" />
+        <CornerPlus className="-top-0.75 -right-0.75" />
+        <CornerPlus className="-bottom-0.75 -left-0.75" />
+        <CornerPlus className="-bottom-0.75 -right-0.75" />
       </div>
       <div className="flex-1 relative">
+        <CornerPlus className="-top-0.75 -right-0.75" />
         <div
-          className="px-3 py-[6px] text-[10px] tracking-[0.16em] uppercase"
+          className="relative px-5 py-3 text-[10px] tracking-[0.16em] uppercase"
           style={{
             color: "var(--accent)",
-            borderBottom: "1px solid var(--fg-dim)",
+            borderBottom: "0.5px solid var(--fg-dim)",
           }}
         >
-          &gt; Powered by:
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "rgba(116, 251, 222, 0.15)",
+              filter: "blur(10px)",
+            }}
+          />
+          <span className="relative text-[10px] leading-[120%] tracking-normal">&gt; Powered by:</span>
         </div>
         <div
-          className="px-3 py-3 flex items-center justify-between"
-          style={{ borderBottom: "1px solid var(--fg-dim)" }}
+          className="px-5 py-3 flex items-center justify-between"
+          style={{ borderBottom: "0.5px solid var(--fg-dim)" }}
         >
           <Image
             src="/blackbird-logo.svg"
             alt="Blackbird"
-            width={135}
-            height={15}
+            width={90}
+            height={10}
             priority
           />
           <span className="text-[11px] text-[var(--accent)]">[+]</span>
         </div>
-        <div className="px-3 py-3 flex items-center justify-between">
+        <div className="px-5 py-3 flex items-center justify-between">
           <Image
             src="/nextgen-logo.svg"
             alt="NextGen Ventures"
-            width={145}
-            height={16}
+            width={94}
+            height={10}
           />
           <span className="text-[11px] text-[var(--accent)]">[+]</span>
         </div>

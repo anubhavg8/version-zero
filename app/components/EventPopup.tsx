@@ -1,11 +1,14 @@
 import PopupFrame from "./PopupFrame";
 
-function FaqRow({ label }: { label: string }) {
+function FaqRow({ label, isLast }: { label: string; isLast?: boolean }) {
   return (
     <div
-      className="flex items-center justify-between px-4 py-3"
+      className="flex items-center justify-between px-5 py-2.5"
       style={{
-        border: "1px solid var(--fg-dim)",
+        borderLeft: "0.5px solid var(--fg-dim)",
+        borderRight: "0.5px solid var(--fg-dim)",
+        borderTop: "0.5px solid var(--fg-dim)",
+        borderBottom: isLast ? "0.5px solid var(--fg-dim)" : undefined,
         background: "var(--bg)",
       }}
     >
@@ -33,23 +36,23 @@ export default function EventPopup({
     >
       <div className="px-5 py-5">
         <div className="flex items-start justify-between">
-          <div className="leading-[1.7]">
+          <div className="leading-[120%] text-[10px] tracking-normal">
             <div>date: april 23rd</div>
             <div>time: 6pm to 9pm</div>
           </div>
           <span
-            className="px-2 py-[2px] text-[10px] tracking-wider uppercase"
+            className="px-2 py-[3px] text-[10px] tracking-normal uppercase"
             style={{ background: "var(--accent)", color: "var(--accent-fg)" }}
           >
             ACTIVE
           </span>
         </div>
       </div>
-      <div className="px-4 pb-4 flex flex-col gap-2">
+      <div className="px-4 pb-4 flex flex-col">
         <FaqRow label="faq 01" />
         <FaqRow label="faq 02" />
         <FaqRow label="faq 03" />
-        <FaqRow label="faq 04" />
+        <FaqRow label="faq 04" isLast />
       </div>
     </PopupFrame>
   );
