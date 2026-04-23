@@ -12,10 +12,6 @@ export default function PoweredByCard() {
     >
       <div
         className="w-[96px] relative"
-        style={{
-          // borderRight: "0.5px solid var(--fg-dim)",
-          background: "var(--bg-elev)",
-        }}
       >
         <Image
           src="/shader_image_placeholder.png"

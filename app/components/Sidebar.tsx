@@ -1,17 +1,61 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import SectionHeader from "./SectionHeader";
 import CornerPlus from "./CornerPlus";
 import { StatusInfo } from "./MainHeader";
 import { PopupKey } from "./popupTypes";
 
+function SessionAccordion({
+  open,
+  id,
+  code,
+}: {
+  open: boolean;
+  id: string;
+  code: string;
+}) {
+  if (!open) return null;
+  return (
+    <div className="md:hidden">
+      <SectionHeader label={`Session ${id}`} code={code} />
+      <div
+        style={{
+          animation: "accordionFadeIn 180ms ease-in forwards",
+        }}
+      >
+        <div className="px-5 py-5 text-[13px] leading-[1.7]">
+          <p>&gt; Lorem ipsum senectus id eget varius sed urna velit mauris proin neque.</p>
+          <p className="mt-4">
+            &gt; Lorem ipsum senectus id eget varius sed urna velit mauris proin neque.
+          </p>
+        </div>
+        <div className="px-5 pb-6 flex gap-4">
+          <div
+            className="flex-1 aspect-[4/3]"
+            style={{ border: "1px solid var(--fg-dim)" }}
+          />
+          <div
+            className="flex-1 aspect-[4/3]"
+            style={{ border: "1px solid var(--fg-dim)" }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Brand() {
   return (
     <div className="flex items-center justify-between px-5 pt-6 pb-6">
-      <div className="font-pixel text-[24px] leading-[80%] tracking-normal uppercase text-[var(--fg)] whitespace-nowrap">
-        Version Zero
-      </div>
+      <Image
+        src="/8Version Zero - teal.svg"
+        alt="Version Zero"
+        width={157}
+        height={20}
+        priority
+      />
       <div className="flex items-center gap-2">
         <Image
           src="/globe.svg"
@@ -100,12 +144,23 @@ export default function Sidebar({
   onSelect: (key: PopupKey) => void;
 }) {
   const isOpen = (k: PopupKey) => openKeys.includes(k);
+  const didInitMobile = useRef(false);
+
+  useEffect(() => {
+    if (didInitMobile.current) return;
+    if (typeof window === "undefined") return;
+    if (!window.matchMedia("(max-width: 767px)").matches) return;
+    didInitMobile.current = true;
+    if (!openKeys.some((k) => k.startsWith("session-"))) {
+      onSelect("session-01");
+    }
+  }, [openKeys, onSelect]);
   return (
     <aside
       className="relative w-full md:h-full md:w-[28vw] flex flex-col shrink-0"
       style={{
         border: "0.5px solid var(--fg-dim)",
-        background: "var(--bg)",
+        background: "var(--sidebar-bg)",
       }}
     >
       <CornerPlus className="-top-0.75 -right-0.75 hidden md:block" />
@@ -119,26 +174,71 @@ export default function Sidebar({
       <SystemInfo />
 
       <SectionHeader label="Demos" code="V0D" />
-      <ListRow
-        label="session 01"
-        onClick={() => onSelect("session-01")}
-        active={isOpen("session-01")}
-      />
-      <ListRow
-        label="session 02"
-        onClick={() => onSelect("session-02")}
-        active={isOpen("session-02")}
-      />
-      <ListRow
-        label="session 03"
-        onClick={() => onSelect("session-03")}
-        active={isOpen("session-03")}
-      />
-      <ListRow
-        label="session 04"
-        onClick={() => onSelect("session-04")}
-        active={isOpen("session-04")}
-      />
+      <div className="hidden md:block">
+        <ListRow
+          label="session 01"
+          onClick={() => onSelect("session-01")}
+          active={isOpen("session-01")}
+        />
+        <ListRow
+          label="session 02"
+          onClick={() => onSelect("session-02")}
+          active={isOpen("session-02")}
+        />
+        <ListRow
+          label="session 03"
+          onClick={() => onSelect("session-03")}
+          active={isOpen("session-03")}
+        />
+        <ListRow
+          label="session 04"
+          onClick={() => onSelect("session-04")}
+          active={isOpen("session-04")}
+        />
+      </div>
+
+      <div
+        className="md:hidden grid grid-cols-4 border-b-[0.5px]"
+        style={{ borderColor: "var(--fg-dim)" }}
+      >
+        {[1, 2, 3, 4].map((n) => {
+          const key = `session-0${n}` as PopupKey;
+          const active = isOpen(key);
+          return (
+            <button
+              key={n}
+              type="button"
+              onClick={() => {
+                const openSessions = openKeys.filter((k) =>
+                  k.startsWith("session-"),
+                );
+                const isOnlyOpen = active && openSessions.length === 1;
+                openSessions.forEach((k) => onSelect(k));
+                if (!isOnlyOpen) onSelect(key);
+              }}
+              className={`flex items-center justify-center gap-1 px-3 py-3 text-[12px] border-r-[0.5px] last:border-r-0 transition-colors hover:bg-[color:var(--fg)]/5 ${
+                active ? "bg-[color:var(--fg)]/5" : ""
+              }`}
+              style={{ borderColor: "var(--fg-dim)" }}
+            >
+              <span>S0{n}</span>
+              <span className="text-[var(--fg-muted)]">[{active ? "×" : "+"}]</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {[1, 2, 3, 4].map((n) => {
+        const key = `session-0${n}` as PopupKey;
+        return (
+          <SessionAccordion
+            key={key}
+            open={isOpen(key)}
+            id={`0${n}`}
+            code={`V0S${n}`}
+          />
+        );
+      })}
 
       <SectionHeader label="Events-List" code="V0EL" />
       <div

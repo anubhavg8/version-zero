@@ -2,6 +2,7 @@
 
 :root {
   --bg: #070F0D;
+  --sidebar-bg: #081210;
   --bg-elev: #061c16;
   --fg: #74fbde;
   --fg-muted: rgba(116, 251, 222, 0.6);
@@ -26,6 +27,16 @@ html, body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@keyframes accordionFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes accordionFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 .font-pixel {
